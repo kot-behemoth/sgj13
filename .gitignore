@@ -36,3 +36,4 @@ Assembly-UnityScript.unityProj
 *.userprefs
 *.suo
 *.sln
+.DS_Store
