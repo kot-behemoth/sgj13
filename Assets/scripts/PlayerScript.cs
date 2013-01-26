@@ -7,6 +7,9 @@ public class PlayerScript : MonoBehaviour {
 
 	private CharacterController controller;
 
+	public Transform direction;
+	public float directionOffset = 0.6f;
+
 	void Start () {
 		controller = GetComponent<CharacterController>();
 	}
@@ -23,6 +26,14 @@ public class PlayerScript : MonoBehaviour {
  			Vector3 planePosition = ScreenToWorld(Input.mousePosition);
 			Instantiate(bullet, planePosition, Quaternion.identity);
 		}
+
+		ShowDirection();
+	}
+
+	private void ShowDirection() {
+		Vector3 mousePlanePosition = ScreenToWorld(Input.mousePosition);
+		Vector3 directionToMouse = (transform.position - mousePlanePosition).normalized;
+		direction.localPosition = directionToMouse * directionOffset;
 	}
 
 	// Borrowed from http://www.fatalfrog.com/?p=7
