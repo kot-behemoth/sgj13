@@ -2,28 +2,19 @@ using UnityEngine;
 
 public class PlayerScript : MonoBehaviour {
 
-	public float speed = 3.0F;
 	public Rigidbody bullet;
+	public float bulletOffset = 1;
 	public float shootPower = 2.0f;
-
-	private CharacterController controller;
-	private Rigidbody rigidbody;
 
 	private Vector3 direction = Vector3.zero;
 	public Transform indicator;
 	public float indicatorOffset = 0.6f;
 
+
 	void Start () {
-		controller = GetComponent<CharacterController>();
-		rigidbody = GetComponent<Rigidbody>();
 	}
 
 	void Update () {
-		// Vector3 moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
-		// moveDirection = transform.TransformDirection(moveDirection);
-		// moveDirection *= speed;
-		// controller.Move(moveDirection * Time.deltaTime);
-
 		// Update direction
 		Vector3 mousePlanePosition = ScreenToWorld(Input.mousePosition);
 		direction = (transform.position - mousePlanePosition).normalized;
@@ -32,7 +23,7 @@ public class PlayerScript : MonoBehaviour {
 		// Now you can simply pass the mouse cursor’s current position to get its equivalent world-space position like this:
 		if(Input.GetButtonDown("Fire1"))
 		{
-			Rigidbody b = Instantiate(bullet, transform.position, Quaternion.identity) as Rigidbody;
+			Rigidbody b = Instantiate(bullet, transform.position + direction*bulletOffset, Quaternion.identity) as Rigidbody;
 			b.transform.parent = transform;
 
 			b.AddForce(direction * shootPower, ForceMode.Impulse);
