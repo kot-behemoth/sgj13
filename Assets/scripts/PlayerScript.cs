@@ -7,12 +7,16 @@ public class PlayerScript : MonoBehaviour {
 	public class Bullet {
 		public Rigidbody rigidbody;
 		public float lifetimeLeft;
+		public Sprite sprite;
 	}
 
 	public int playerNumber = 1;
 
 	public GameObject swarmObject;
 	private SwarmScript swarm;
+
+	public GameObject spriteManagerObject;
+	private SpriteManager spriteManager;
 
 	public Rigidbody bulletPrefab;
 	public float bulletLife = 3f;
@@ -28,6 +32,8 @@ public class PlayerScript : MonoBehaviour {
 	private int score = 0;
 
 	void Start () {
+		spriteManager = spriteManagerObject.GetComponent<SpriteManager>();
+
 		bullets = new Bullet[numberOfBullets];
 		for(int i = 0; i < numberOfBullets; i++)
 		{
@@ -36,6 +42,18 @@ public class PlayerScript : MonoBehaviour {
 			brigidbody.transform.parent = transform;
 			brigidbody.gameObject.SetActive(false);
 			bullet.rigidbody = brigidbody;
+
+			// SpriteManager.AddSprite(gameObject, WorldWidthOfSprite, WorldHeightOfSprite, XonTheTexture, YonTheTexture, WidthOnTheTexture, HeightOnTheTexture, false);
+			bullet.sprite = spriteManager.AddSprite(bullet.rigidbody.gameObject, 2f, 2f, 0, 512, 512, 512, true);
+
+			UVAnimation animation = new UVAnimation();
+			Vector2 randomFacingUV = (UnityEngine.Random.value >= 0.5f) ? new Vector2(0, 0.5f) : new Vector2(0.5f, 0);
+			animation.BuildUVAnim(randomFacingUV, new Vector2(0.5f, 0.5f), 2, 1, 2, 8);
+			animation.loopCycles = 3000;
+			// bullet.sprite.AddAnimation(animation);
+			bullet.sprite.PlayAnim(animation);
+			spriteManager.AnimateSprite(bullet.sprite);
+
 			bullets[i] = bullet;
 		}
 
@@ -86,11 +104,12 @@ public class PlayerScript : MonoBehaviour {
 			b.rigidbody.MovePosition(transform.position + direction*bulletOffset);
 			b.rigidbody.transform.position = transform.position + direction*bulletOffset;
 			b.rigidbody.isKinematic = false;
+			b.sprite.hidden = false;
 
 			b.rigidbody.AddForce(direction * shootPower, ForceMode.Impulse);
 			rigidbody.AddForce(-direction * shootPower, ForceMode.Impulse);
 
-			swarm.amountOfBees--;
+			// swarm.amountOfBees--;
 		}
 	}
 
@@ -99,6 +118,7 @@ public class PlayerScript : MonoBehaviour {
 			Bullet bullet = bullets[i];
 			if(bullet.lifetimeLeft <= 0f) {
 				bullet.rigidbody.gameObject.SetActive(false);
+				bullet.sprite.hidden = true;
 			} else {
 				bullet.lifetimeLeft -= Time.deltaTime;
 			}
