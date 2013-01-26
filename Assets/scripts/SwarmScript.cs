@@ -100,7 +100,7 @@ public class SwarmScript : MonoBehaviour {
 			//Debug.DrawLine(bees[i].position, bees[i].position+Vector3.up);
 			particles[i].velocity = Vector3.zero;
 			//particles[i].size = 1.0f;
-			particles[i].size = Mathf.Clamp(particles[i].size + Random.Range(-0.1f, 0.1f), 0.3f, 0.8f); //Mathf.Cos(Time.time*pulseRate/Random.Range(1f, 2f))*Mathf.Sin(Time.time*pulseRate/Random.Range(1f, 2f))+1;
+			particles[i].size = Mathf.Clamp(particles[i].size + Random.Range(-0.1f, 0.1f), 0.3f, 0.7f);
 		}
 		particleSystem.SetParticles(particles, plength);
 	}

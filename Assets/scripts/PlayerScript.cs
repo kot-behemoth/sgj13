@@ -4,7 +4,7 @@ using System;
 public class PlayerScript : MonoBehaviour {
 
 	[Serializable]
-	private class Bullet {
+	public class Bullet {
 		public Rigidbody rigidbody;
 		public float lifetimeLeft;
 	}
@@ -49,6 +49,10 @@ public class PlayerScript : MonoBehaviour {
 		// }
 	}
 
+	public void SuccessfulHit() {
+		score++;
+	}
+
 	private void UpdateControls() {
 		// Update direction
 		if(playerNumber == 1) {
@@ -61,7 +65,6 @@ public class PlayerScript : MonoBehaviour {
 
 		if(Input.GetButtonDown(ControlForPlayer("Fire1"))) {
 			Fire();
-			score++;
 		}
 	}
 
