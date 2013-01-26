@@ -9,6 +9,8 @@ public class PlayerScript : MonoBehaviour {
 		public float lifetimeLeft;
 	}
 
+	public int playerNumber = 1;
+
 	public Rigidbody bulletPrefab;
 	public float bulletLife = 3f;
 	public float bulletOffset = 1f;
@@ -34,24 +36,39 @@ public class PlayerScript : MonoBehaviour {
 	}
 
 	void Update () {
-		// Update direction
-		Vector3 mousePlanePosition = ScreenToWorld(Input.mousePosition);
-		direction = (transform.position - mousePlanePosition).normalized;
-		indicator.localPosition = direction * indicatorOffset;
-
 		UpdateBullets();
 
-		// Now you can simply pass the mouse cursor’s current position to get its equivalent world-space position like this:
-		if(Input.GetButtonDown("Fire1"))
-		{
-			Bullet b = GetAvailableBullet();
-			if(b != null) {
-				// Rigidbody b = Instantiate(bullet, transform.position + direction*bulletOffset, Quaternion.identity) as Rigidbody;
-				b.rigidbody.position = transform.position + direction*bulletOffset;
+		UpdateControls();
 
-				b.rigidbody.AddForce(direction * shootPower, ForceMode.Impulse);
-				rigidbody.AddForce(-direction * shootPower, ForceMode.Impulse);
-			}
+		// if(playerNumber != 1) {
+		// 	Debug.Log(new Vector3(Input.GetAxis(ControlForPlayer("Horizontal")), 0, Input.GetAxis(ControlForPlayer("Vertical"))));
+		// }
+	}
+
+	private void UpdateControls() {
+		// Update direction
+		if(playerNumber == 1) {
+			Vector3 mousePlanePosition = ScreenToWorld(Input.mousePosition);
+			direction = (transform.position - mousePlanePosition).normalized;
+		} else {
+			direction = new Vector3(Input.GetAxis(ControlForPlayer("Horizontal")), 0, Input.GetAxis(ControlForPlayer("Vertical")));
+		}
+		indicator.localPosition = direction * indicatorOffset;
+
+		if(Input.GetButtonDown(ControlForPlayer("Fire1"))) {
+			Fire();
+		}
+	}
+
+	private void Fire() {
+		Bullet b = GetAvailableBullet();
+		if(b != null) {
+			b.rigidbody.MovePosition(transform.position + direction*bulletOffset);
+			b.rigidbody.transform.position = transform.position + direction*bulletOffset;
+			b.rigidbody.isKinematic = false;
+
+			b.rigidbody.AddForce(direction * shootPower, ForceMode.Impulse);
+			rigidbody.AddForce(-direction * shootPower, ForceMode.Impulse);
 		}
 	}
 
@@ -72,6 +89,7 @@ public class PlayerScript : MonoBehaviour {
 			// We're looking for dead bullets
 			if(!bullet.rigidbody.gameObject.activeSelf)
 			{
+				bullet.rigidbody.isKinematic = true;
 				bullet.rigidbody.gameObject.SetActive(true);
 				bullet.lifetimeLeft = bulletLife;
 				return bullet;
@@ -79,6 +97,10 @@ public class PlayerScript : MonoBehaviour {
 		}
 
 		return null;
+	}
+
+	private String ControlForPlayer(String controlName) {
+		return String.Format(controlName + playerNumber.ToString());
 	}
 
 	// Borrowed from http://www.fatalfrog.com/?p=7
