@@ -22,6 +22,8 @@ public class PlayerScript : MonoBehaviour {
 	public Transform indicator;
 	public float indicatorOffset = 0.6f;
 
+	private int score = 0;
+
 	void Start () {
 		bullets = new Bullet[numberOfBullets];
 		for(int i = 0; i < numberOfBullets; i++)
@@ -40,6 +42,8 @@ public class PlayerScript : MonoBehaviour {
 
 		UpdateControls();
 
+		GUIManager.SetPlayerScore(playerNumber, score);
+
 		// if(playerNumber != 1) {
 		// 	Debug.Log(new Vector3(Input.GetAxis(ControlForPlayer("Horizontal")), 0, Input.GetAxis(ControlForPlayer("Vertical"))));
 		// }
@@ -57,6 +61,7 @@ public class PlayerScript : MonoBehaviour {
 
 		if(Input.GetButtonDown(ControlForPlayer("Fire1"))) {
 			Fire();
+			score++;
 		}
 	}
 
