@@ -35,6 +35,8 @@ public class PlayerScript : MonoBehaviour {
 			bullet.rigidbody = brigidbody;
 			bullets[i] = bullet;
 		}
+
+		GameManager.RegisterPlayer(gameObject);
 	}
 
 	void Update () {
@@ -47,6 +49,9 @@ public class PlayerScript : MonoBehaviour {
 		// if(playerNumber != 1) {
 		// 	Debug.Log(new Vector3(Input.GetAxis(ControlForPlayer("Horizontal")), 0, Input.GetAxis(ControlForPlayer("Vertical"))));
 		// }
+
+		// Debug.Log(((GameObject)GameManager.instance.players[0]).transform.position);
+		// // Debug.Log(GameManager.instance.players[1].transform.position);
 	}
 
 	public void SuccessfulHit() {
