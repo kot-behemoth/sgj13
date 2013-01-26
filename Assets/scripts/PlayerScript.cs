@@ -11,7 +11,8 @@ public class PlayerScript : MonoBehaviour {
 
 	public int playerNumber = 1;
 
-	public SwarmScript swarm;
+	public GameObject swarmObject;
+	private SwarmScript swarm;
 
 	public Rigidbody bulletPrefab;
 	public float bulletLife = 3f;
@@ -40,7 +41,7 @@ public class PlayerScript : MonoBehaviour {
 
 		GameManager.RegisterPlayer(gameObject);
 
-		swarm = gameObject.GetComponent<SwarmScript>();
+		swarm = swarmObject.GetComponent<SwarmScript>();
 	}
 
 	void Update () {
@@ -78,6 +79,8 @@ public class PlayerScript : MonoBehaviour {
 	}
 
 	private void Fire() {
+		if(swarm.amountOfBees <= 1) return;
+
 		Bullet b = GetAvailableBullet();
 		if(b != null) {
 			b.rigidbody.MovePosition(transform.position + direction*bulletOffset);
@@ -86,6 +89,8 @@ public class PlayerScript : MonoBehaviour {
 
 			b.rigidbody.AddForce(direction * shootPower, ForceMode.Impulse);
 			rigidbody.AddForce(-direction * shootPower, ForceMode.Impulse);
+
+			swarm.amountOfBees--;
 		}
 	}
 

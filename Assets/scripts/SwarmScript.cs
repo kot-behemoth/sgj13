@@ -6,7 +6,7 @@ public class Boid{
 	public Vector3 position = Vector3.zero;
 	public Vector3 velocity = Vector3.zero;
 	public Vector3 acceleration = Vector3.zero;
-	public float desiredSeperation = 1.0f;
+	public float desiredSeperation = 3.0f;
 	public float maxSpeed = 0.5f;
 	public float maxForce = 0.09f;
 	public Boid(Vector3 initPosition){
@@ -72,7 +72,9 @@ public class SwarmScript : MonoBehaviour {
 	Boid[] bees;
 	public float pulseAmp, pulseRate, pulseMin, pulseMax;
 
-	public int amountOfBees = 100;
+	public float minSize, maxSize;
+
+	public int amountOfBees = 5;
 	private int currentAmountOfBees;
 
 	public GameObject target;
@@ -113,7 +115,7 @@ public class SwarmScript : MonoBehaviour {
 			//Debug.DrawLine(bees[i].position, bees[i].position+Vector3.up);
 			particles[i].velocity = Vector3.zero;
 			//particles[i].size = 1.0f;
-			particles[i].size = Mathf.Clamp(particles[i].size + Random.Range(-0.1f, 0.1f), 0.3f, 0.7f);
+			particles[i].size = Mathf.Clamp(particles[i].size + Random.Range(-0.2f, 0.2f), minSize, maxSize);
 		}
 		particleSystem.SetParticles(particles, plength);
 	}
