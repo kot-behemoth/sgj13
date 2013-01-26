@@ -79,7 +79,7 @@ public class SwarmScript : MonoBehaviour {
 	void Start () {
 		bees = new Boid[amountOfBees];
 		for (int i = 0; i < bees.Length; i++) {
-			bees[i] = new Boid(transform.position + new Vector3(Random.value, Random.value, Random.value));
+			bees[i] = new Boid(target.transform.position + new Vector3(Random.value, Random.value, Random.value));
 		}
 		GetComponent<ParticleSystem>().Emit(amountOfBees);
 	}
