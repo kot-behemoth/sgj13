@@ -75,9 +75,10 @@ public class PlayerScript : MonoBehaviour {
 	private void UpdateBullets() {
 		for(int i = 0; i < numberOfBullets; i++) {
 			Bullet bullet = bullets[i];
-			bullet.lifetimeLeft -= Time.deltaTime;
 			if(bullet.lifetimeLeft <= 0f) {
 				bullet.rigidbody.gameObject.SetActive(false);
+			} else {
+				bullet.lifetimeLeft -= Time.deltaTime;
 			}
 		}
 	}
