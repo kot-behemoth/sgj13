@@ -10,11 +10,12 @@ public class ChaseScript : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		players = GameObject.Find("GameManager").GetComponent<GameManager>().players;
+		//players = GameObject.Find("GameManager").GetComponent<GameManager>().players;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		players = (GameObject[])GameManager.instance.players.ToArray(typeof(GameObject));
 		GameObject closestPlayer = players[0];
 		float distance = Vector3.Distance(players[0].transform.position, transform.position);
 		for(int i=1;i<players.Length;i++){
@@ -27,5 +28,6 @@ public class ChaseScript : MonoBehaviour {
 		transform.position += (closestPlayer.transform.position-transform.position).normalized*speed;
 		// if away
 		//transform.position -= (closestPlayer.transform.position-transform.position).normalized*speed;
+		
 	}
 }
