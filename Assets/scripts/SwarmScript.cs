@@ -70,13 +70,21 @@ public class SwarmScript : MonoBehaviour {
 
 	// Use this for initialization
 	Boid[] bees;
-	public int amountOfBees = 100;
 	public float pulseAmp, pulseRate, pulseMin, pulseMax;
 
+	public int amountOfBees = 100;
+	private int currentAmountOfBees;
+
 	public GameObject target;
-	private static ParticleSystem.Particle[] particles = new ParticleSystem.Particle[100];
+	private static ParticleSystem.Particle[] particles;
 
 	void Start () {
+		currentAmountOfBees = amountOfBees;
+		CreateBees();
+	}
+
+	private void CreateBees() {
+		particles = new ParticleSystem.Particle[amountOfBees];
 		bees = new Boid[amountOfBees];
 		for (int i = 0; i < bees.Length; i++) {
 			bees[i] = new Boid(target.transform.position + new Vector3(Random.value, Random.value, Random.value));
@@ -86,6 +94,11 @@ public class SwarmScript : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+
+		if(currentAmountOfBees != amountOfBees) {
+			CreateBees();
+			currentAmountOfBees = amountOfBees;
+		}
 
 		int plength = particleSystem.GetParticles(particles);
 		if(plength == 0){

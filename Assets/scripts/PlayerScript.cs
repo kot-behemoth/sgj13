@@ -11,6 +11,8 @@ public class PlayerScript : MonoBehaviour {
 
 	public int playerNumber = 1;
 
+	public SwarmScript swarm;
+
 	public Rigidbody bulletPrefab;
 	public float bulletLife = 3f;
 	public float bulletOffset = 1f;
@@ -37,6 +39,8 @@ public class PlayerScript : MonoBehaviour {
 		}
 
 		GameManager.RegisterPlayer(gameObject);
+
+		swarm = gameObject.GetComponent<SwarmScript>();
 	}
 
 	void Update () {
