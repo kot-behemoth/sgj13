@@ -10,7 +10,7 @@ public class ChaseScript : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		
+		players = GameObject.Find("GameManager").GetComponent<GameManager>().players;
 	}
 	
 	// Update is called once per frame
