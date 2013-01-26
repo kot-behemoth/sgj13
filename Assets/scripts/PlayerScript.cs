@@ -7,8 +7,9 @@ public class PlayerScript : MonoBehaviour {
 
 	private CharacterController controller;
 
-	public Transform direction;
-	public float directionOffset = 0.6f;
+	private Vector3 direction = Vector3.zero;
+	public Transform indicator;
+	public float indicatorOffset = 0.6f;
 
 	void Start () {
 		controller = GetComponent<CharacterController>();
@@ -20,20 +21,17 @@ public class PlayerScript : MonoBehaviour {
 		moveDirection *= speed;
 		controller.Move(moveDirection * Time.deltaTime);
 
+		// Update direction
+		Vector3 mousePlanePosition = ScreenToWorld(Input.mousePosition);
+		direction = (transform.position - mousePlanePosition).normalized;
+		indicator.localPosition = direction * indicatorOffset;
+
 		// Now you can simply pass the mouse cursor’s current position to get its equivalent world-space position like this:
 		if(Input.GetButtonDown("Fire1"))
 		{
  			Vector3 planePosition = ScreenToWorld(Input.mousePosition);
 			Instantiate(bullet, planePosition, Quaternion.identity);
 		}
-
-		ShowDirection();
-	}
-
-	private void ShowDirection() {
-		Vector3 mousePlanePosition = ScreenToWorld(Input.mousePosition);
-		Vector3 directionToMouse = (transform.position - mousePlanePosition).normalized;
-		direction.localPosition = directionToMouse * directionOffset;
 	}
 
 	// Borrowed from http://www.fatalfrog.com/?p=7
