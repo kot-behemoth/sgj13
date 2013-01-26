@@ -12,7 +12,7 @@ public class Boid{
 	public Boid(Vector3 initPosition){
 		position = initPosition;
 	}
-	
+
 	public void run(Boid[] boids, Vector3 target){
 		Vector3 seeking = seek(target);
 		Vector3 sep = separate(boids);
@@ -44,7 +44,7 @@ public class Boid{
 		}
 		if(count > 0){
 			//Debug.Log(count);
-			steering /= (float)count;		
+			steering /= (float)count;
 		}
 		if(steering.magnitude > 0){
 			steering = steering.normalized*maxForce;
@@ -72,7 +72,7 @@ public class SwarmScript : MonoBehaviour {
 	Boid[] bees;
 	public int amountOfBees = 100;
 	public float pulseAmp, pulseRate, pulseMin, pulseMax;
-	
+
 	public GameObject target;
 	private static ParticleSystem.Particle[] particles = new ParticleSystem.Particle[100];
 
@@ -83,10 +83,10 @@ public class SwarmScript : MonoBehaviour {
 		}
 		GetComponent<ParticleSystem>().Emit(amountOfBees);
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-		
+
 		int plength = particleSystem.GetParticles(particles);
 		if(plength == 0){
 			GetComponent<ParticleSystem>().Emit(amountOfBees);
@@ -100,7 +100,8 @@ public class SwarmScript : MonoBehaviour {
 			//Debug.DrawLine(bees[i].position, bees[i].position+Vector3.up);
 			particles[i].velocity = Vector3.zero;
 			//particles[i].size = 1.0f;
-		}			  
+			particles[i].size = Mathf.Clamp(particles[i].size + Random.Range(-0.1f, 0.1f), 0.3f, 0.8f); //Mathf.Cos(Time.time*pulseRate/Random.Range(1f, 2f))*Mathf.Sin(Time.time*pulseRate/Random.Range(1f, 2f))+1;
+		}
 		particleSystem.SetParticles(particles, plength);
 	}
 }
