@@ -109,7 +109,7 @@ public class PlayerScript : MonoBehaviour {
 			b.rigidbody.AddForce(direction * shootPower, ForceMode.Impulse);
 			rigidbody.AddForce(-direction * shootPower, ForceMode.Impulse);
 
-			// swarm.amountOfBees--;
+			swarm.amountOfBees--;
 		}
 	}
 
