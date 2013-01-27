@@ -47,14 +47,12 @@ public class PlayerScript : MonoBehaviour {
 			brigidbody.gameObject.SetActive(false);
 			bullet.rigidbody = brigidbody;
 
-			// SpriteManager.AddSprite(gameObject, WorldWidthOfSprite, WorldHeightOfSprite, XonTheTexture, YonTheTexture, WidthOnTheTexture, HeightOnTheTexture, false);
 			bullet.sprite = spriteManager.AddSprite(bullet.rigidbody.gameObject, 2f, 2f, 0, 512, 512, 512, true);
 
 			UVAnimation animation = new UVAnimation();
 			Vector2 randomFacingUV = (UnityEngine.Random.value >= 0.5f) ? new Vector2(0, 0.5f) : new Vector2(0.5f, 0);
 			animation.BuildUVAnim(randomFacingUV, new Vector2(0.5f, 0.5f), 2, 1, 2, 8);
 			animation.loopCycles = 3000;
-			// bullet.sprite.AddAnimation(animation);
 			bullet.sprite.PlayAnim(animation);
 			spriteManager.AnimateSprite(bullet.sprite);
 
@@ -74,13 +72,6 @@ public class PlayerScript : MonoBehaviour {
 		RespawnBees();
 
 		GUIManager.SetPlayerScore(playerNumber, score);
-
-		// if(playerNumber != 1) {
-		// 	Debug.Log(new Vector3(Input.GetAxis(ControlForPlayer("Horizontal")), 0, Input.GetAxis(ControlForPlayer("Vertical"))));
-		// }
-
-		// Debug.Log(((GameObject)GameManager.instance.players[0]).transform.position);
-		// // Debug.Log(GameManager.instance.players[1].transform.position);
 	}
 
 	public void SuccessfulHit() {
