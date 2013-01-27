@@ -96,6 +96,11 @@ public class PlayerScript : MonoBehaviour {
 
 	private void IsDead() {
 		if(swarm.amountOfBees <= 0) {
+			swarm.amountOfBees = 0;
+
+			if(playerNumber == 1) GUIManager.SetWinningPlayer(2);
+			else if(playerNumber == 2) GUIManager.SetWinningPlayer(1);
+
 			GameEventManager.TriggerGameOver();
 		}
 	}
