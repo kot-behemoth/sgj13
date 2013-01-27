@@ -18,6 +18,7 @@ public class PlayerScript : MonoBehaviour {
 	public GameObject spriteManagerObject;
 	private SpriteManager spriteManager;
 
+	public int maxBees = 10;
 	public float beeRespawnCooldown = 1;
 	private float beeRespawn;
 
@@ -91,6 +92,9 @@ public class PlayerScript : MonoBehaviour {
 		if(beeRespawn <= 0) {
 			swarm.amountOfBees += 1;
 			beeRespawn = beeRespawnCooldown;
+			if(swarm.amountOfBees > maxBees) {
+				swarm.amountOfBees = maxBees;
+			}
 		}
 	}
 
@@ -133,7 +137,7 @@ public class PlayerScript : MonoBehaviour {
 			b.rigidbody.AddForce(direction * shootPower, ForceMode.Impulse);
 			rigidbody.AddForce(-direction * shootPower, ForceMode.Impulse);
 
-			// swarm.amountOfBees--;
+			swarm.amountOfBees--;
 		}
 	}
 
