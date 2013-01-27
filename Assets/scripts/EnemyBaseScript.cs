@@ -16,8 +16,11 @@ public class EnemyBaseScript : MonoBehaviour {
 	void OnCollisionEnter(Collision collision) {
         foreach (ContactPoint contact in collision.contacts) {
             if(contact.otherCollider.gameObject.tag == "bullet") {
-				Destroy(gameObject);
+				// Destroy(gameObject);
+				contact.thisCollider.gameObject.GetComponent<ChaseScript>().GotStunned();
             	contact.otherCollider.gameObject.transform.parent.gameObject.GetComponent<PlayerScript>().SuccessfulHit();
+            	// destroy bullet
+            	contact.otherCollider.gameObject.SetActive(false);
 			}
         }
     }
