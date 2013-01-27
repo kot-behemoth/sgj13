@@ -28,7 +28,6 @@ public class ChaseScript : MonoBehaviour {
 	public float attackDistanceThreshold = 3f;
 
 	void Start () {
-		//players = GameObject.Find("GameManager").GetComponent<GameManager>().players;
 		animator = bear.GetComponent<Animator>();
 	}
 
@@ -36,6 +35,7 @@ public class ChaseScript : MonoBehaviour {
 
 		switch((int)currentState) {
 			case (int)States.Seeking:
+				animator.SetBool("isSeeking", true);
 				Seeking();
 				break;
 
@@ -57,12 +57,12 @@ public class ChaseScript : MonoBehaviour {
 				break;
 
 			case (int)States.Attacking:
+				animator.SetBool("isAttacking", true);
 				attackedTime -= Time.deltaTime;
-				if(stunnedTime <= 0) {
+				if(attackedTime <= 0) {
 					HitPlayer();
 					attackedTime = attackCooldown;
 				}
-
 				break;
 		}
 
@@ -88,12 +88,8 @@ public class ChaseScript : MonoBehaviour {
 		Vector3 vectorToClosestPlayer = closestPlayer.transform.position-transform.position;
 
 		if(vectorToClosestPlayer.magnitude <= attackDistanceThreshold) {
-			animator.SetBool("isAttacking", true);
 			attackedTime = attackCooldown;
 			currentState = States.Attacking;
-		}
-		else {
-			animator.SetBool("isSeeking", true);
 		}
 		transform.position += vectorToClosestPlayer.normalized*speed;
 		transform.LookAt(closestPlayer.transform);
