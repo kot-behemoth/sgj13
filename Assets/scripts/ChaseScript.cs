@@ -33,7 +33,6 @@ public class ChaseScript : MonoBehaviour {
 
 		switch((int)currentState) {
 			case (int)States.Seeking:
-				// bear.animation.CrossFade("walk");
 				Seeking();
 				break;
 
@@ -41,7 +40,6 @@ public class ChaseScript : MonoBehaviour {
 				runawayedTime -= Time.deltaTime;
 				RunningAway();
 				if(runawayedTime <= 0) {
-					// bear.animation.CrossFade("walk");
 					animator.SetBool("isRunaway", false);
 					currentState = States.Seeking;
 				}
@@ -50,7 +48,6 @@ public class ChaseScript : MonoBehaviour {
 			case (int)States.Stunned:
 				stunnedTime -= Time.deltaTime;
 				if(stunnedTime <= 0) {
-					// bear.animation.CrossFade("walk");
 					animator.SetBool("isStunned", false);
 					currentState = States.Seeking;
 					rigidbody.isKinematic = false;
@@ -64,7 +61,6 @@ public class ChaseScript : MonoBehaviour {
 	}
 
 	public void GotStunned() {
-		// bear.animation.CrossFade("stunned");
 		animator.SetBool("isStunned", true);
 		rigidbody.isKinematic = true;
 		currentState = States.Stunned;
@@ -72,7 +68,6 @@ public class ChaseScript : MonoBehaviour {
 	}
 
 	public void HitPlayer() {
-		// bear.animation.CrossFade("runaway");
 		animator.SetBool("isRunaway", true);
 		currentState = States.RunningAway;
 		runawayedTime = runawayTime;
