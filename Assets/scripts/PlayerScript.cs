@@ -90,7 +90,7 @@ public class PlayerScript : MonoBehaviour {
 	}
 
 	public void GotHit() {
-		swarm.amountOfBees -= 3;
+		swarm.amountOfBees -= 2;
 		IsDead();
 	}
 
