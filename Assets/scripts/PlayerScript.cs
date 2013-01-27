@@ -81,6 +81,10 @@ public class PlayerScript : MonoBehaviour {
 		score++;
 	}
 
+	public void GotHit() {
+		swarm.amountOfBees--;
+	}
+
 	private void UpdateControls() {
 		// Update direction
 		if(playerNumber == 1) {

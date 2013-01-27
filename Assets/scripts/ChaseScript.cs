@@ -16,11 +16,16 @@ public class ChaseScript : MonoBehaviour {
 	public float speed;
 	public GameObject[] players;
 
-	public float stunTime = 2f;
+	public float stunCooldown = 2f;
 	private float stunnedTime;
 
-	public float runawayTime = 2f;
+	public float runawayCooldown = 2f;
 	private float runawayedTime;
+
+	public float attackCooldown = 2f;
+	private float attackedTime;
+
+	public float attackDistanceThreshold = 3f;
 
 	void Start () {
 		//players = GameObject.Find("GameManager").GetComponent<GameManager>().players;
@@ -52,6 +57,12 @@ public class ChaseScript : MonoBehaviour {
 				break;
 
 			case (int)States.Attacking:
+				attackedTime -= Time.deltaTime;
+				if(stunnedTime <= 0) {
+					HitPlayer();
+					attackedTime = attackCooldown;
+				}
+
 				break;
 		}
 
@@ -60,32 +71,52 @@ public class ChaseScript : MonoBehaviour {
 	public void GotStunned() {
 		animator.SetBool("isStunned", true);
 		currentState = States.Stunned;
-		stunnedTime = stunTime;
+		stunnedTime = stunCooldown;
 	}
 
 	public void HitPlayer() {
+		GameObject closestPlayer = GetClosestPlayer();
+		closestPlayer.GetComponent<PlayerScript>().GotHit();
 		animator.SetBool("isRunaway", true);
+
 		currentState = States.RunningAway;
-		runawayedTime = runawayTime;
+		runawayedTime = runawayCooldown;
 	}
 
 	private void Seeking() {
-		players = (GameObject[])GameManager.instance.players.ToArray(typeof(GameObject));
-		GameObject closestPlayer = players[0];
-		float distance = Vector3.Distance(players[0].transform.position, transform.position);
-		for(int i=1;i<players.Length;i++){
-			if(Vector3.Distance(players[i].transform.position, transform.position) < distance){
-				distance = Vector3.Distance(players[i].transform.position, transform.position);
-				closestPlayer = players[i];
-			}
-		}
+		GameObject closestPlayer = GetClosestPlayer();
 		Vector3 vectorToClosestPlayer = closestPlayer.transform.position-transform.position;
-		animator.SetFloat("distanceFromPlayer", vectorToClosestPlayer.magnitude);
+
+		if(vectorToClosestPlayer.magnitude <= attackDistanceThreshold) {
+			animator.SetBool("isAttacking", true);
+			attackedTime = attackCooldown;
+			currentState = States.Attacking;
+		}
+		else {
+			animator.SetBool("isSeeking", true);
+		}
 		transform.position += vectorToClosestPlayer.normalized*speed;
 		transform.LookAt(closestPlayer.transform);
 	}
 
+	private void Attacking() {
+		GameObject closestPlayer = GetClosestPlayer();
+		Vector3 vectorToClosestPlayer = closestPlayer.transform.position-transform.position;
+		if(vectorToClosestPlayer.magnitude > attackDistanceThreshold) {
+			animator.SetBool("isSeeking", true);
+			currentState = States.Seeking;
+		}
+	}
+
 	private void RunningAway() {
+		GameObject closestPlayer = GetClosestPlayer();
+		Vector3 vectorToClosestPlayer = closestPlayer.transform.position-transform.position;
+		transform.position -= vectorToClosestPlayer.normalized*speed;
+		transform.LookAt(transform.position-vectorToClosestPlayer);
+	}
+
+	private GameObject GetClosestPlayer()
+	{
 		players = (GameObject[])GameManager.instance.players.ToArray(typeof(GameObject));
 		GameObject closestPlayer = players[0];
 		float distance = Vector3.Distance(players[0].transform.position, transform.position);
@@ -95,10 +126,7 @@ public class ChaseScript : MonoBehaviour {
 				closestPlayer = players[i];
 			}
 		}
-		Vector3 vectorToClosestPlayer = closestPlayer.transform.position-transform.position;
-		animator.SetFloat("distanceFromPlayer", vectorToClosestPlayer.magnitude);
-		transform.position -= vectorToClosestPlayer.normalized*speed;
-		transform.LookAt(closestPlayer.transform);
+		return closestPlayer;
 	}
 
 }
