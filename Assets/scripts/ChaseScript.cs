@@ -29,8 +29,6 @@ public class ChaseScript : MonoBehaviour {
 
 	void Update () {
 
-		Debug.Log(animator.GetFloat("distanceFromPlayer"));
-
 		switch((int)currentState) {
 			case (int)States.Seeking:
 				Seeking();
