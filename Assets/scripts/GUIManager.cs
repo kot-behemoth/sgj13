@@ -24,7 +24,7 @@ public class GUIManager : MonoBehaviour {
 	}
 
 	void Update () {
-		if(isGameOver && (Input.GetButtonDown("Fire11") || Input.GetButtonDown("Fire12"))) {
+		if(isGameOver && (Input.GetButton("Fire21") || Input.GetButton("Fire22"))) {
 			GameEventManager.TriggerGameStart();
 			isGameOver = false;
 		}
@@ -49,7 +49,11 @@ public class GUIManager : MonoBehaviour {
 	}
 
 	public static void SetPlayerScore(int playerNumber, int playerScore) {
-		instance.playerScores[playerNumber-1].text = String.Format("Player {0}: {1}", playerNumber, playerScore);
+		if(playerNumber == 1) {
+			instance.playerScores[playerNumber-1].text = String.Format("Red player: {0}", playerScore);
+		} else {
+			instance.playerScores[playerNumber-1].text = String.Format("Greenish player: {0}", playerScore);
+		}
 	}
 
 	public static void SetWinningPlayer(int playerNumber) {
