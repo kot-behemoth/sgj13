@@ -19,6 +19,8 @@ public class GUIManager : MonoBehaviour {
 		GameEventManager.GameOver += GameOver;
 		instance.winText.enabled = false;
 		instance.instructionsText.enabled = false;
+
+		instance.savedTimeScale = Time.timeScale;
 	}
 
 	void Update () {
@@ -41,7 +43,6 @@ public class GUIManager : MonoBehaviour {
 		instance.winText.enabled = true;
 		instance.instructionsText.enabled = true;
 
-		instance.savedTimeScale = Time.timeScale;
 		Time.timeScale = 0;
 
 		instance.isGameOver = true;
