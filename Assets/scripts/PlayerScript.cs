@@ -83,6 +83,13 @@ public class PlayerScript : MonoBehaviour {
 
 	public void GotHit() {
 		swarm.amountOfBees--;
+		IsDead();
+	}
+
+	private void IsDead() {
+		if(swarm.amountOfBees <= 0) {
+			GameEventManager.TriggerGameOver();
+		}
 	}
 
 	private void UpdateControls() {

@@ -22,6 +22,7 @@ public class GUIManager : MonoBehaviour {
 	}
 
 	private void GameOver() {
+		Debug.Log("GUIManager GAME OVER");
 	}
 
 	public static void SetPlayerScore(int playerNumber, int playerScore) {
