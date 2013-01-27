@@ -20,7 +20,7 @@ public class ChaseScript : MonoBehaviour {
 	private float stunnedTime;
 
 	public float runawayTime = 2f;
-	public float runawayedTime;
+	private float runawayedTime;
 
 	void Start () {
 		//players = GameObject.Find("GameManager").GetComponent<GameManager>().players;
@@ -48,7 +48,6 @@ public class ChaseScript : MonoBehaviour {
 				if(stunnedTime <= 0) {
 					animator.SetBool("isStunned", false);
 					currentState = States.Seeking;
-					rigidbody.isKinematic = false;
 				}
 				break;
 
@@ -60,7 +59,6 @@ public class ChaseScript : MonoBehaviour {
 
 	public void GotStunned() {
 		animator.SetBool("isStunned", true);
-		rigidbody.isKinematic = true;
 		currentState = States.Stunned;
 		stunnedTime = stunTime;
 	}
