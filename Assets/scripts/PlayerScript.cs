@@ -18,6 +18,9 @@ public class PlayerScript : MonoBehaviour {
 	public GameObject spriteManagerObject;
 	private SpriteManager spriteManager;
 
+	public float beeRespawnCooldown = 1;
+	private float beeRespawn;
+
 	public Rigidbody bulletPrefab;
 	public float bulletLife = 3f;
 	public float bulletOffset = 1f;
@@ -67,6 +70,8 @@ public class PlayerScript : MonoBehaviour {
 
 		UpdateControls();
 
+		RespawnBees();
+
 		GUIManager.SetPlayerScore(playerNumber, score);
 
 		// if(playerNumber != 1) {
@@ -81,8 +86,16 @@ public class PlayerScript : MonoBehaviour {
 		score++;
 	}
 
+	private void RespawnBees() {
+		beeRespawn -= Time.deltaTime;
+		if(beeRespawn <= 0) {
+			swarm.amountOfBees += 1;
+			beeRespawn = beeRespawnCooldown;
+		}
+	}
+
 	public void GotHit() {
-		swarm.amountOfBees--;
+		swarm.amountOfBees -= 3;
 		IsDead();
 	}
 
